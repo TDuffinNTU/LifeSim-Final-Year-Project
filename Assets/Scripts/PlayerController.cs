@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public float _Speed = 1f;    
-    private GameObject _CAM;
-    private Vector3 _CameraRelativePosition;
+    public GameController _GameController;
+    public float _Speed = 1f;  
     
+    private GameObject _Camera;    
+    private Vector3 _CameraRelativePosition;
+
+    private int _ActiveCollisions = 0;
 
     // Start is called before the first frame update
     void Start()
-    {      
-        _CAM = GameObject.FindGameObjectWithTag("MainCamera");
-        _CameraRelativePosition = transform.position - _CAM.transform.position;
+    {
+        _ActiveCollisions = 0;
+        _Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        _CameraRelativePosition = transform.position - _Camera.transform.position;
     }
 
     // Update is called once per frame
@@ -31,8 +34,20 @@ public class PlayerController : MonoBehaviour
 
         transform.Translate(movement, Space.World);
 
-        _CAM.transform.position = transform.position - _CameraRelativePosition;
+        _Camera.transform.position = transform.position - _CameraRelativePosition;       
+    }
 
-       
-    }    
+    private void OnCollisionEnter(Collision collision)
+    {
+        _ActiveCollisions++;
+        _GameController.PromptUpdate(_ActiveCollisions);
+        Debug.Log(_ActiveCollisions);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        _ActiveCollisions--; 
+        _GameController.PromptUpdate(_ActiveCollisions);
+        Debug.Log(_ActiveCollisions);
+    }
 }

@@ -150,35 +150,35 @@ public class GroundGenerator : MonoBehaviour
 
     }
 
-    void PlaceHouses() 
-    {
-        // TODO make this agnostic of map element
-        int houseCount = 0;
-        // keep us from an infinite loop.
-        int MAXMISSES = 10;
-        int misses = 0;
-        while (houseCount <= MAXHOUSECOUNT && misses < MAXMISSES)        {
-            // get random square
-            //print(squareCount);
-            int[] p = IndexToCoordinates(Random.Range(0, mapWidth * mapHeight));
-            // check if it's valid (on grass)
-            print(p[0] + " " + p[1]);
-            switch (squares[p[0], p[1]]) 
-            {
-                case (byte)GroundTextures.GRASS:
-                    //make new house!         
-                    HouseList.Add(
-                        Instantiate(House, new Vector3(p[0] + 0.07f, 0 , p[1] - 0.3f), House.transform.rotation));
-                    houseCount++;
-                    break;
-                default:
-                    misses++;
-                    break;
-            }
-        }        
-    }
+    //void PlaceHouses() 
+    //{
+    //    // TODO make this agnostic of map element
+    //    int houseCount = 0;
+    //    // keep us from an infinite loop.
+    //    int MAXMISSES = 10;
+    //    int misses = 0;
+    //    while (houseCount <= MAXHOUSECOUNT && misses < MAXMISSES)        {
+    //        // get random square
+    //        //print(squareCount);
+    //        int[] p = IndexToCoordinates(Random.Range(0, mapWidth * mapHeight));
+    //        // check if it's valid (on grass)
+    //        print(p[0] + " " + p[1]);
+    //        switch (squares[p[0], p[1]]) 
+    //        {
+    //            case (byte)GroundTextures.GRASS:
+    //                //make new house!         
+    //                HouseList.Add(
+    //                    Instantiate(House, new Vector3(p[0] + 0.07f, 0 , p[1] - 0.3f), House.transform.rotation));
+    //                houseCount++;
+    //                break;
+    //            default:
+    //                misses++;
+    //                break;
+    //        }
+    //    }        
+    //}
 
-    // NEW
+    // Places objects on map
     void PlaceMapItemRandomly(GameObject item, int max, GroundTextures allowedTile)
     {
         float smallHeight = 0.07f;

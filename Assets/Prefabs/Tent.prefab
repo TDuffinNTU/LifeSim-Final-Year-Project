@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 5065782361468836002}
   - component: {fileID: 2535496972189736688}
   - component: {fileID: 2927934280789724681}
+  - component: {fileID: -5906606481251107541}
+  - component: {fileID: 3777230260573260460}
   m_Layer: 0
-  m_Name: Tent(Clone)
+  m_Name: Tent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,3 +83,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-5906606481251107541
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3726875331350631696}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5449936, y: 1.870597, z: 1.979302}
+  m_Center: {x: -0.000000029802322, y: -0.8883582, z: 0.989651}
+--- !u!65 &3777230260573260460
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3726875331350631696}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5449936, y: 1.870597, z: 1.979302}
+  m_Center: {x: 1.31, y: -0.8883582, z: 0.989651}
