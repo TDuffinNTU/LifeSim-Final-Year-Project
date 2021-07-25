@@ -86,15 +86,12 @@ class TRANSLATIONS : CSVData
     // avoid hard-coding translation strings
     public string GetTranslationWithCode(string code) 
     {
-        switch (code.ToUpper())
+        return code.ToUpper() switch
         {
-            case "EN":
-                return EN;                
-            case "CY":
-                return CY;
-            default:
-                throw new RegionCodeNotFoundException(code);        
-        }
+            "EN"    => EN,
+            "CY"    => CY,
+            _       => throw new RegionCodeNotFoundException(code),
+        };
     }
 }
 
