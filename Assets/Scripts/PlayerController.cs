@@ -1,53 +1,104 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameController _GameController;
-    public float _Speed = 1f;  
+    private GameController GC;
+
+    public float Speed = 1f;  
     
-    private GameObject _Camera;    
-    private Vector3 _CameraRelativePosition;
+    private GameObject Camera;    
+    private Vector3 CameraRelPosition;
 
-    private int _ActiveCollisions = 0;
+    private List<GameObject> Colliders;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Player setup
+    /// </summary>
     void Start()
     {
-        _ActiveCollisions = 0;
-        _Camera = GameObject.FindGameObjectWithTag("MainCamera");
-        _CameraRelativePosition = transform.position - _Camera.transform.position;
+        GC = GameObject.Find("GameController").GetComponent<GameController>();
+        Camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        Colliders = new List<GameObject>();
+        CameraRelPosition = transform.position - Camera.transform.position;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Player updates
+    /// </summary>
     void Update()
     {
         float xInput = Input.GetAxis("Horizontal");
         float zInput = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(xInput, 0, zInput);
-        movement *= _Speed * Time.deltaTime;
+        movement *= Speed * Time.deltaTime;
 
         if (movement.magnitude > 0)
             transform.rotation = Quaternion.LookRotation(movement);
 
         transform.Translate(movement, Space.World);
 
-        _Camera.transform.position = transform.position - _CameraRelativePosition;       
+        Camera.transform.position = transform.position - CameraRelPosition;       
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        _ActiveCollisions++;
-        _GameController.PromptUpdate(_ActiveCollisions);
-        Debug.Log(_ActiveCollisions);
+    /// <summary>
+    /// Called when player ENTERS the trigger zone of map objs
+    /// </summary>
+    /// <param name="other"> Collider trigger we've left</param>
+    private void OnTriggerEnter(Collider other)
+    {     
+        // add new collider
+        Colliders.Add(other.gameObject);
+
+        ResetAllOutlines();
+
+        // display prompt
+        GC.CollisionListChangeListener(Colliders);
     }
 
-    private void OnCollisionExit(Collision collision)
+    /// <summary>
+    /// Called when player EXITS the trigger zone of map objs
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerExit(Collider other)
     {
-        _ActiveCollisions--; 
-        _GameController.PromptUpdate(_ActiveCollisions);
-        Debug.Log(_ActiveCollisions);
+        var outline = other.gameObject.GetComponent<Outline>();
+        if ( outline != null) 
+        {
+            Destroy(outline);
+        }
+
+        Colliders.Remove(other.gameObject); 
+        GC.CollisionListChangeListener(Colliders);
+
+        ResetAllOutlines();
+    }
+
+    /// <summary>
+    /// Resets the outline shown around front obj in List<Colliders>
+    /// </summary>
+    private void ResetAllOutlines()     
+    {
+        // remove all outlines
+        foreach (var obj in Colliders)
+        {
+            var outline = obj.GetComponent<Outline>();
+            if (outline != null)
+            {
+                Destroy(outline);
+            }
+        }
+
+        // add outline to first collider in list
+        if (Colliders.Count != 0 && Colliders[0].gameObject.GetComponent<Outline>() == null)
+        {
+            var outline = Colliders[0].gameObject.AddComponent<Outline>();
+            outline.OutlineMode = Outline.Mode.OutlineAll;
+            outline.OutlineColor = Color.cyan;
+            outline.OutlineWidth = 10f;
+        }
+
     }
 }

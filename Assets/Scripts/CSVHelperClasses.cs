@@ -1,135 +1,221 @@
-﻿using CsvHelper;
-using System;
-using System.Globalization;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Globalization;
+using CsvHelper;
 
-
-// region code wasn't found
-public class RegionCodeNotFoundException : Exception
+/// <summary>
+/// The database that we will build our game around
+/// </summary>
+public class Database
 {
-    public RegionCodeNotFoundException()
+    // databases -- immutable
+    private readonly IEnumerable<TRANSLATION_MAP> Translations;
+    private readonly IEnumerable<RESPONSE_MAP> Responses;
+    private readonly IEnumerable<NPC_DIALOG_MAP> NPCDialog;
+    private readonly IEnumerable<NPC_DATA_MAP> NPCData;
+
+    private IEnumerable<FRIENDSHIP_MAP> Friendships;
+
+
+    // paths to CSVs
+    // TODO: move root inside unity
+    private const string rootpath = "C:\\Users\\thoma\\OneDrive - Nottingham Trent University\\YEAR FOUR\\FYP\\Databases\\";
+
+
+
+    private const string TranslationsPath = rootpath + "TRANSLATIONS.CSV";
+    private const string NPCDialogPath = rootpath + "NPCDIALOG.CSV";
+    private const string ResponsesPath = rootpath + "RESPONSES.CSV";
+    private const string NPCDataPath = rootpath + "NPC_DATA.CSV";
+    private const string FurniturePath = rootpath + "FURNITURE.CSV";
+    private const string FriendshipsPath = rootpath + "SAVEDATA\\FRIENDSHIPS.CSV";
+    private const string SettingsPath = rootpath + "SAVEDATA\\SETTINGS.CSV";
+    private const string SaveDataPath = rootpath + "SAVEDATA\\SAVEDATA.CSV";
+
+    
+
+    public Database()
     {
+        Translations =  LoadData<TRANSLATION_MAP>(TranslationsPath);
+        NPCDialog =       LoadData<NPC_DIALOG_MAP>(NPCDialogPath);
+        Responses =     LoadData<RESPONSE_MAP>(ResponsesPath);
+        //Friendships = LoadData<FRIENDSHIP_MAP>(PATHS[3]);
+        //NPCData = LoadData<NPC_DATA_MAP>(PATHS[4]);
     }
 
-    public RegionCodeNotFoundException(string message) 
-        : base(message)
-    {        
-    }
-}
-
-// primary key was not found
-public class PrimaryKeyNotFoundException : Exception
-{
-    public PrimaryKeyNotFoundException()
+    /// <summary>
+    /// Returns dialog data from the database by its PKey
+    /// </summary>
+    /// <param name="name">The PKey for the NPC_DIALOG table</param>
+    /// <returns>NPC_DIALOG_MAP class with data</returns>
+    public NPC_DIALOG_MAP DialogLookup(string name) 
     {
+        var query = 
+            from d in NPCDialog
+            where d.Name == name
+            select d;
+
+        return (query != null && query.Any()) ? query.First() : null;
     }
 
-    public PrimaryKeyNotFoundException(string message)
-        : base(message)
+    /// <summary>
+    /// returns translation string from the central TRANSLATIONS table in the db
+    /// </summary>
+    /// <param name="name">PKey for TRANSLATIONS table</param>
+    /// <param name="code">region code corresponding to table header (ie. "EN", "CY")</param>
+    /// <returns>string from TRANSLATIONS table of PKey and region</returns>
+    public string TranslationLookup(string name, string code)
     {
-    }
-}
-
-abstract class CSVData 
-{
-    // find location of csv data
-    public virtual string GetPath() { return "Assets/Databases/"; }
-
-    // find primary key
-    public abstract string GetPrimaryKey();
-
-    // query csv by primary key, type T must match signature of class being entered
-    public T GetDataByPrimaryKey<T>(string pkey) 
-    {      
-        // get path of child class and open in csv helper
-        using (var reader = new StreamReader(this.GetPath()))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        if (name == "" || code == "")
         {
-            // get each record and search sequential
-            var records = csv.GetRecords<T>();
-            
-            foreach(var record in records)
+            return "";
+        }
+
+        var query =
+            from t in Translations
+            where t.Name == name
+
+            select new
             {
-                // casting to CSVData parent class
-                CSVData data = (CSVData)(object) record;
-                if (data.GetPrimaryKey() == pkey) 
-                {
-                    return record;
-                }
+                translation =
+                    code.ToLower() == "en" ? t.EN :
+                    code.ToLower() == "cy" ? t.CY :
+                    $"INVALID TRANSLATION CODE: {code}"
+            };
+
+
+        return (query != null && query.Any()) ?
+            (query.First().translation == "\"\"" ? $"NO TRANSLATION FOR: {name}\tCODE: {code}" : query.First().translation) :
+            $"couldnt find";
+
+    }
+
+    /// <summary>
+    /// Modify player relationship with NPC of name by delta points
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="delta"></param>
+    public void ModifyFriendshipPoints (string name, int delta)
+    {
+        var temp = Friendships.ToList();
+
+        // find friendship
+        foreach (var f in temp) 
+        {
+            if (f.Name == name) 
+            {
+                f.Points += delta;
+                break;
             }
         }
 
-        throw new PrimaryKeyNotFoundException(pkey);
+        using (var writer = new StreamWriter(FriendshipsPath))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) 
+        {
+            csv.WriteHeader<FRIENDSHIP_MAP>();
+            csv.NextRecord();
+            foreach(var f in temp) 
+            {
+                csv.WriteRecord(f);
+                csv.NextRecord();
+            }
+        } // Using keyword means the stream is flushed (ie written to) once out of scope
+    }
+
+
+    /// <summary>
+    /// Type-agnostic loading of data into memory from CSV files
+    /// </summary>
+    /// <typeparam name="T">Class_Map class to assign data to</typeparam>
+    /// <param name="path">Filepath of .csv</param>
+    /// <returns>Enumerable of records under table </returns>
+    private IEnumerable<T> LoadData<T>(string path)
+    {
+        using (var reader = new StreamReader(path))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            return csv.GetRecords<T>().ToList();
+        }
     }
 
 }
 
-class TRANSLATIONS : CSVData
+/// <summary>
+/// Translations for our game, Name = TKey
+/// </summary>
+public class TRANSLATION_MAP
 {
-    // CSV HELPER CLASS
     public string Name { get; set; }
     public string EN { get; set; }
     public string CY { get; set; }
-
-    public override string GetPath()
-    {
-        var p = base.GetPath();
-        return p + "TRANSLATIONS.CSV";
-    }
-
-    public override string GetPrimaryKey()
-    {
-        return this.Name;
-    }
-
-    // avoid hard-coding translation strings
-    public string GetTranslationWithCode(string code) 
-    {
-        return code.ToUpper() switch
-        {
-            "EN"    => EN,
-            "CY"    => CY,
-            _       => throw new RegionCodeNotFoundException(code),
-        };
-    }
 }
 
 
-class NPCDIALOG : CSVData
+/// <summary>
+/// Player responses Tkeys
+/// </summary>
+public class RESPONSE_MAP
 {
-    // CSV HELPER CLASS
+    public string Name { get; set; }
+    public int Points { get; set; }
+}
+
+/// <summary>
+/// NPC dialog Tkeys and responses TKeys
+/// </summary>
+public class NPC_DIALOG_MAP
+{
     public string Name { get; set; }
     public string Emoji { get; set; }
     public string ResponseNice { get; set; }
     public string ResponseNeutral { get; set; }
-    public string ResponseMean { get; set; }    
-
-    public override string GetPath()
-    {
-        var p = base.GetPath();
-        return p + "NPCDIALOG.CSV";
-    }
-
-    public override string GetPrimaryKey()
-    {
-        return this.Name;
-    }
-
-    public string[] GetEmoji(int count)
-    {
-        string[] arr = Emoji.Split(',');
-        return arr.Take(count).ToArray();
-    }
+    public string ResponseMean { get; set; }
 }
 
-class PLAYERRESPONSES : TRANSLATIONS
-{    
-    // pretty much inherits everything but the path
-    public override string GetPath()
-    {
-        var p = "Assets/Databases/";
-        return p + "PLAYERRESPONSES.CSV";
-    }       
+/// <summary>
+/// Friendship status with NPC
+/// </summary>
+public class FRIENDSHIP_MAP 
+{
+    public string Name { get; set; }
+    public int Points { get; set; }
 }
+
+/// <summary>
+/// NPC Data (name, attitude for now)
+/// </summary>
+public class NPC_DATA_MAP 
+{
+    public string Name { get; set; }
+    public int Attitude { get; set; }
+}
+
+/// <summary>
+/// Settings for the game
+/// </summary>
+public class SETTINGS_MAP
+{ 
+    public string LanugageCode { get; set; }
+    public string AllLanguages { get; set; }
+}
+
+
+/// <summary>
+/// Our save data
+/// </summary>
+public class SAVE_DATA_MAP 
+{
+    public string Name { get; set; }
+    public string Inventory { get; set; }
+    public string MapTiles { get; set; }
+    public string MapItems { get; set; }
+    public string Friendships { get; set; }
+
+}
+
+
+
+
+
 

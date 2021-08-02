@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {  
-    GameObject _NearInteractablePrompt;
+    GameObject NearInteractablePrompt;
 
     // Start is called before the first frame update
     void Start()
-    {        
-        _NearInteractablePrompt = GameObject.Find("Canvas/PROMPT");
-        _NearInteractablePrompt.SetActive(false);
+    {
+        Database DB = new Database();
+        NearInteractablePrompt = GameObject.Find("Canvas/PROMPT");
+        NearInteractablePrompt.SetActive(false);
     }
 
     // Update is called once per frame
@@ -19,8 +20,18 @@ public class GameController : MonoBehaviour
         
     }
 
-    public void PromptUpdate(int activeCols) 
+    public void CollisionListChangeListener(List<GameObject> colliders) 
     {
-        _NearInteractablePrompt.SetActive(activeCols > 1);
+        //foreach (var c in activeCols) { print(c.ToString()); }        
+        NearInteractablePrompt.SetActive(colliders.Count > 0);
+    }
+
+    /// <summary>
+    /// update friendship values depending on response chosen
+    /// </summary>
+    /// <param name="index"></param>
+    public void ResponseClickedListener(int index) 
+    {
+        // update db
     }
 }
