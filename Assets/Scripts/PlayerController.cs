@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private GameController GC;
+    private Rigidbody RB;
 
     public float Speed = 1f;  
     
@@ -18,6 +19,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         GC = GameObject.Find("GameController").GetComponent<GameController>();
+        RB = gameObject.GetComponent<Rigidbody>();
+
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
         Colliders = new List<GameObject>();
@@ -27,20 +30,21 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Player updates
     /// </summary>
-    void Update()
+    void FixedUpdate()
     {
         float xInput = Input.GetAxis("Horizontal");
         float zInput = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(xInput, 0, zInput);
-        movement *= Speed * Time.deltaTime;
+        Vector3 TargetDir = new Vector3(xInput, 0, zInput).normalized;
 
-        if (movement.magnitude > 0)
-            transform.rotation = Quaternion.LookRotation(movement);
+        if (Mathf.Abs(xInput + zInput) > 0.1f)
+        {
+            RB.rotation = Quaternion.LookRotation(TargetDir);
+        }
 
-        transform.Translate(movement, Space.World);
+        RB.velocity = TargetDir * Speed * Time.fixedDeltaTime;
 
-        Camera.transform.position = transform.position - CameraRelPosition;       
+        Camera.transform.position = RB.position - CameraRelPosition;       
     }
 
     /// <summary>

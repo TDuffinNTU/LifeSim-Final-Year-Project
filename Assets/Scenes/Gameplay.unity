@@ -2745,11 +2745,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742202588967492606, guid: baa4d8af3e5b3584dbdfc6c21120d6c5, type: 3}
       propertyPath: Speed
-      value: 3
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6742202588967492606, guid: baa4d8af3e5b3584dbdfc6c21120d6c5, type: 3}
       propertyPath: _GameController
       value: 
       objectReference: {fileID: 1270533978}
+    - target: {fileID: 6742202588967492607, guid: baa4d8af3e5b3584dbdfc6c21120d6c5, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: baa4d8af3e5b3584dbdfc6c21120d6c5, type: 3}

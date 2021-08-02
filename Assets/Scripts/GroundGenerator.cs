@@ -298,13 +298,10 @@ public class GroundGenerator : MonoBehaviour
                     }
 
                     if (px > 0)
-                    {
-                        debug++; 
-
+                    {                 
                         if (Tilemap[px - 1, py] != (byte)GroundTextures.WATER)
                             WestFace(px, py, 0, Tilemap[px, py], ref cVertices, ref cTriangles, ref cUV, ref cQuadCount);
-                    }
-                        
+                    }                        
 
                 }
                 else 
@@ -317,10 +314,7 @@ public class GroundGenerator : MonoBehaviour
                 TopFace(px, py, 0, Tilemap[px, py], ref gVertices, ref gTriangles, ref gUV, ref gQuadCount);
                 
             }
-        }
-
-        print(debug);
-        debug = 0;
+        }      
 
     }
 
