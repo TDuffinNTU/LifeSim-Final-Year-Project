@@ -3,6 +3,9 @@ using System.Linq;
 using System.IO;
 using System.Globalization;
 using CsvHelper;
+using System;
+//using Unity;
+//using UnityEngine;
 
 /// <summary>
 /// The database that we will build our game around
@@ -14,22 +17,24 @@ public class Database
     private readonly IEnumerable<RESPONSE_MAP> Responses;
     private readonly IEnumerable<NPC_DIALOG_MAP> NPCDialog;
     private readonly IEnumerable<NPC_DATA_MAP> NPCData;
+    private readonly IEnumerable<ITEMS_MAP> Items;
 
-    private IEnumerable<FRIENDSHIP_MAP> Friendships;
+    
 
+    //private IEnumerable<FRIENDSHIP_MAP> Friendships;   
 
     // paths to CSVs
     // TODO: move root inside unity
     private const string rootpath = "C:\\Users\\thoma\\OneDrive - Nottingham Trent University\\YEAR FOUR\\FYP\\Databases\\";
 
-
+    private Random rng = new Random();
 
     private const string TranslationsPath = rootpath + "TRANSLATIONS.CSV";
     private const string NPCDialogPath = rootpath + "NPCDIALOG.CSV";
     private const string ResponsesPath = rootpath + "RESPONSES.CSV";
-    private const string NPCDataPath = rootpath + "NPC_DATA.CSV";
-    private const string FurniturePath = rootpath + "FURNITURE.CSV";
-    private const string FriendshipsPath = rootpath + "SAVEDATA\\FRIENDSHIPS.CSV";
+    private const string NPCDataPath = rootpath + "NPCDATA.CSV";
+    private const string ItemPath = rootpath + "ITEMS.CSV";
+    //private const string FriendshipsPath = rootpath + "SAVEDATA\\FRIENDSHIPS.CSV";
     private const string SettingsPath = rootpath + "SAVEDATA\\SETTINGS.CSV";
     private const string SaveDataPath = rootpath + "SAVEDATA\\SAVEDATA.CSV";
 
@@ -38,11 +43,13 @@ public class Database
     public Database()
     {
         Translations =  LoadData<TRANSLATION_MAP>(TranslationsPath);
-        NPCDialog =       LoadData<NPC_DIALOG_MAP>(NPCDialogPath);
-        Responses =     LoadData<RESPONSE_MAP>(ResponsesPath);
+        NPCDialog = LoadData<NPC_DIALOG_MAP>(NPCDialogPath);
+        Responses = LoadData<RESPONSE_MAP>(ResponsesPath);
+        NPCData = LoadData<NPC_DATA_MAP>(NPCDataPath);
+        Items = LoadData<ITEMS_MAP>(ItemPath);
         //Friendships = LoadData<FRIENDSHIP_MAP>(PATHS[3]);
-        //NPCData = LoadData<NPC_DATA_MAP>(PATHS[4]);
     }
+
 
     /// <summary>
     /// Returns dialog data from the database by its PKey
@@ -57,6 +64,21 @@ public class Database
             select d;
 
         return (query != null && query.Any()) ? query.First() : null;
+    }
+
+    /// <summary>
+    /// get the cost of an item by its key
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public int ItemCostLookup(string name) 
+    {
+        var query =
+            from i in Items
+            where i.Name == name
+            select i.Cost;
+
+        return (query != null && query.Any()) ? query.First() : 0;
     }
 
     /// <summary>
@@ -91,37 +113,72 @@ public class Database
 
     }
 
+    public IEnumerator<NPC_DATA_MAP> GetRandomNPCList() 
+    {
+        return NPCData.OrderBy(a=>rng.Next()).GetEnumerator();
+    }
+
+    /// <summary>
+    /// a random number of shop items
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public List<ITEMS_MAP> GetRandomShopItems(int c)
+    {
+        var shopitems =
+            from item in Items
+            where item.InShop == 1
+            select item;
+
+        var shuffleditems = shopitems.OrderBy(a => rng.Next()).ToArray();
+        var l = new List<ITEMS_MAP>(c);
+
+        for (int i = 0; i < c; i++) 
+        {
+            if (i < shuffleditems.Length)
+            {
+                l.Add(shuffleditems[i]);
+            }
+            else 
+            {
+                l.Add(shuffleditems[0]);
+            }            
+        }
+
+        return l;
+    }
+
     /// <summary>
     /// Modify player relationship with NPC of name by delta points
     /// </summary>
     /// <param name="name"></param>
     /// <param name="delta"></param>
-    public void ModifyFriendshipPoints (string name, int delta)
-    {
-        var temp = Friendships.ToList();
+    //public void ModifyFriendshipPoints (string name, int delta)
+    //{
+    //    var temp = Friendships.ToList();
 
-        // find friendship
-        foreach (var f in temp) 
-        {
-            if (f.Name == name) 
-            {
-                f.Points += delta;
-                break;
-            }
-        }
+    //    // find friendship
+    //    foreach (var f in temp) 
+    //    {
+    //        if (f.Name == name) 
+    //        {
+    //            f.Points += delta;
+    //            break;
+    //        }
+    //    }
 
-        using (var writer = new StreamWriter(FriendshipsPath))
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) 
-        {
-            csv.WriteHeader<FRIENDSHIP_MAP>();
-            csv.NextRecord();
-            foreach(var f in temp) 
-            {
-                csv.WriteRecord(f);
-                csv.NextRecord();
-            }
-        } // Using keyword means the stream is flushed (ie written to) once out of scope
-    }
+    //    using (var writer = new StreamWriter(FriendshipsPath))
+    //    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) 
+    //    {
+    //        csv.WriteHeader<FRIENDSHIP_MAP>();
+    //        csv.NextRecord();
+    //        foreach(var f in temp) 
+    //        {
+    //            csv.WriteRecord(f);
+    //            csv.NextRecord();
+    //        }
+    //    } // Using keyword means the stream is flushed once out of scope
+    //}
 
 
     /// <summary>
@@ -211,7 +268,13 @@ public class SAVE_DATA_MAP
     public string MapTiles { get; set; }
     public string MapItems { get; set; }
     public string Friendships { get; set; }
+}
 
+public class ITEMS_MAP 
+{
+    public string Name { get; set; }
+    public int Cost { get; set; }
+    public int InShop { get; set; }
 }
 
 

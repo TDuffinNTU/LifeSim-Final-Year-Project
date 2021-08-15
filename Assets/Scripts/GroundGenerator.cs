@@ -1,9 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GroundGenerator : MonoBehaviour
 {
+    private const string NPC_PREFAB_PATH = "Prefabs/MapGeneration/NPC";
+
     // ground mesh is what the player will see
     private Mesh gMesh;
     private List<Vector3> gVertices = new List<Vector3>();
@@ -20,18 +22,22 @@ public class GroundGenerator : MonoBehaviour
     private int cQuadCount;
 
 
-    private const int MAXHOUSECOUNT = 8;
-    public GameObject House;
-    private List<GameObject> HouseList = new List<GameObject>();
+    private const int MAX_TENT_COUNT = 8;
+    public GameObject Tent;
+
     private List<GameObject> MapItemList = new List<GameObject>();
 
-    private const int MAXSHOPCOUNT = 1;
+    private const int MAX_SHOP_COUNT = 1;
     public GameObject Shop;
     
 
-    private const int MAXTREECOUNT = 200;
+    private const int MAX_TREE_COUNT = 200;
     public GameObject Tree;
-    
+
+    private const int MAX_FLOWER_COUNT = 500;
+    public GameObject FlowerYellow;
+    public GameObject FlowerRed;
+    public GameObject FlowerPurple; 
 
     private const int MAXBRIDGECOUNT = 3;
    
@@ -45,7 +51,6 @@ public class GroundGenerator : MonoBehaviour
 
     private const int LARGEINT = 1000000;
 
-    private int debug = 0;
 
     // UV Stuff
     private enum GroundTextures { 
@@ -60,28 +65,22 @@ public class GroundGenerator : MonoBehaviour
 
     private enum GroundItems 
     {
-        SHOP,
-        PLAYERHOUSE,
+        SHOP,        
         NPCHOUSE,
         TREE,
-        FLOWER
-    }   
+        FLOWER_RED,
+        FLOWER_PURPLE,
+        FLOWER_YELLOW
+    }      
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void NewMap() 
     {
         gMesh = GetComponent<MeshFilter>().mesh;
         cMesh = new Mesh();
 
         MeshCollider = GetComponent<MeshCollider>();
-        RandomSeed = Random.Range(1,LARGEINT);
-        NewMap();
-        
-    }
+        RandomSeed = Random.Range(1, LARGEINT);
 
-    public void NewMap() 
-    {
         GenerateGround();
         BuildMesh();
         UpdateMesh();
@@ -257,9 +256,31 @@ public class GroundGenerator : MonoBehaviour
             }
         }
 
-        PlaceMapItemRandomly(House, MAXHOUSECOUNT, GroundTextures.GRASS);
-        PlaceMapItemRandomly(Tree, MAXTREECOUNT, GroundTextures.GRASS);
-        PlaceMapItemRandomly(Shop, MAXSHOPCOUNT, GroundTextures.GRASS);
+        PlaceMapItemRandomly(Tent, MAX_TENT_COUNT, GroundTextures.GRASS);
+
+        // place NPCs
+        var alltents =
+            from item in MapItemList
+            where item.name == $"{Tent.name}(Clone)"
+            select item;
+
+        var randomnpcs = GameObject.Find("GameController").GetComponent<DatabaseController>().db.GetRandomNPCList();
+
+        foreach (var t in alltents) 
+        {           
+            var newnpc = Instantiate(Resources.Load(NPC_PREFAB_PATH, typeof(GameObject)) as GameObject,
+                t.transform.position + new Vector3(0,1,0), Quaternion.identity);
+            randomnpcs.MoveNext();  
+            newnpc.GetComponent<NonPlayerController>().Name = randomnpcs.Current.Name;
+            newnpc.GetComponent<NonPlayerController>().Attitude = randomnpcs.Current.Attitude;
+
+        }
+
+        PlaceMapItemRandomly(Tree, MAX_TREE_COUNT, GroundTextures.GRASS);
+        PlaceMapItemRandomly(Shop, MAX_SHOP_COUNT, GroundTextures.GRASS);
+        PlaceMapItemRandomly(FlowerRed, MAX_FLOWER_COUNT, GroundTextures.GRASS);
+        PlaceMapItemRandomly(FlowerPurple, MAX_FLOWER_COUNT, GroundTextures.GRASS);
+        PlaceMapItemRandomly(FlowerYellow, MAX_FLOWER_COUNT, GroundTextures.GRASS);
 
     }
 

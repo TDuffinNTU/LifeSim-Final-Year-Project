@@ -6,102 +6,78 @@ using UnityEngine.UI;
 
 public class ClockController : MonoBehaviour
 {
-    public Text DayText;
-    public RawImage ClockBottom;
-    public RawImage ClockTop;
-    public Light Light;
+    private GameObject ClockHand;
+    private GameObject Light;
 
-    private const int TIME_PER_TICK = 1;
-    private const int TICKS_PER_DAY = 360;
-    
+    private const float TIME_PER_DAY = 30f;
+
     private const float ROTATE_OFFSET_CLOCK = -90f;
-    private const float ROTATE_OFFSET_LIGHT = 35f;
-    private const float LERP_CONSTANT_CLOCK = .01f;
-    private const float LERP_CONSTANT_LIGHT = .01f;
+    private const float ROTATE_OFFSET_LIGHT = 35f; 
+
+
 
     [SerializeField]
-    private Quaternion LightRotationTarget;
-    
-    [SerializeField]
-    private Quaternion ClockRotationTarget;
+    private float TimeLeftToday = TIME_PER_DAY;
 
-    private float TimeTilTick;
-
-    [SerializeField]
-    private int CurrentTick;
-
-    [SerializeField]
-    private int CurrentDay;
 
 
     // Start is called before the first frame update
     void Start()
-    {
-        TimeTilTick = TIME_PER_TICK;
-        CurrentTick = 0;
+    {        
+        ClockHand = GameObject.Find("Hand");
+        Light = GameObject.Find("Directional Light");
+
+        TimeLeftToday = TIME_PER_DAY;        
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        TimeTilTick -= Time.fixedDeltaTime;
-        if (TimeTilTick <= 0) 
+        TimeLeftToday -= Time.deltaTime;
+        if (TimeLeftToday <= 0f)
         {
-            Tick();
+            TimeLeftToday = TIME_PER_DAY;
+            GameObject.Find("GameController").GetComponent<GameController>().RefreshStock();
         }
 
-        Light.transform.rotation = Quaternion.Lerp(Light.transform.rotation, LightRotationTarget,  LERP_CONSTANT_LIGHT);
-        ClockBottom.transform.rotation = Quaternion.Lerp(ClockBottom.transform.rotation, ClockRotationTarget,  LERP_CONSTANT_CLOCK);
+        float rot = GetPercentOfDay() * 360f;
+        Light.transform.rotation = Quaternion.Euler(rot-ROTATE_OFFSET_CLOCK, 0, 0);
+        ClockHand.transform.rotation = Quaternion.Euler(0, 0, rot-ROTATE_OFFSET_LIGHT);
     }
 
-    void SetTick(int tick) 
+    /// <summary>
+    /// The percent of the day that has elapsed
+    /// </summary>
+    /// <returns>float betwen 0 and 1 representing decimal percentage of day elapsed</returns>
+    public float GetPercentOfDay()
     {
-        if (tick > 0 && tick < TICKS_PER_DAY) 
+        return TimeLeftToday / TIME_PER_DAY;
+    }
+
+    /// <summary>
+    /// the time of day represented as a string
+    /// </summary>
+    /// <returns>NIGHT, MORNING, or AFTERNOON as a string</returns>
+    public string GetTimeOfDay()
+    {
+        var p = GetPercentOfDay();
+
+        if (p < 0.3f)
         {
-            CurrentTick = tick;
+            return "MORNING";
         }
-    }
-
-    int GetTick() { return CurrentTick; }
-
-    int GetDay() { return CurrentDay; }
-
-    void Tick() 
-    {
-        //Debug.Log("Tick");
-        if (CurrentTick >= TICKS_PER_DAY)
+        if (p < 0.75f)
         {
-            CurrentTick = 0;
-            NextDay();
+            return "NIGHT";
+        }
+        else if (p < 1f)
+        {
+            return "AFTERNOON";
         }
         else 
         {
-            CurrentTick++;
-        }
-        
-        TimeTilTick = TIME_PER_TICK;
-        UpdateRotations();
-    }
-
-    void NextDay() 
-    {
-        if (CurrentDay == 6)
-        {
-            CurrentDay = 0;
-        }
-        else 
-        {
-            CurrentDay++;
+            return "MORNING";
         }
     }
 
-    void UpdateRotations() 
-    {
-        float percent = (float)CurrentTick / (float)TICKS_PER_DAY;
-        float rotation = 360f * percent;
-        //Debug.Log(percent + "" + rotation);
-        ClockRotationTarget = Quaternion.Euler(0, 0, ClockBottom.transform.rotation.z + rotation - ROTATE_OFFSET_CLOCK);
-        LightRotationTarget = Quaternion.Euler(Light.transform.rotation.x + rotation - ROTATE_OFFSET_LIGHT, 0, 0);
-
-    }
 }
