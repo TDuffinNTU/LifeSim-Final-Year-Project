@@ -110,7 +110,8 @@ public class PlayerController : MonoBehaviour
             {
                 if (Inventory.Capacity != Inventory.Count)
                 {
-                    ObjectNearPlayer.GetComponent<Interactable>().onPlayerPickup();                    
+                    ObjectNearPlayer.GetComponent<Interactable>().onPlayerPickup();
+                    GC.SetPromptText(null);
                 }
             }
             catch (Exception e)
@@ -199,6 +200,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ObjectNearPlayer = (other.gameObject);
+        GC.SetPromptText(other.gameObject.GetComponent<Interactable>());
         //print($"Nearby: {other.gameObject.GetComponent<Interactable>().Name}");
     }
 
@@ -209,6 +211,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         ObjectNearPlayer = (null);
+        GC.SetPromptText(null);
     }      
 
     /// <summary>

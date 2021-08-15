@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468cf84989d661b45a02d3d772f7c1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: SHOP
 --- !u!1001 &1964234598249778584
 PrefabInstance:
   m_ObjectHideFlags: 0

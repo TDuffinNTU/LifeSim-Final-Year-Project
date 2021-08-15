@@ -14,19 +14,19 @@ public class GameController : MonoBehaviour
     private GameObject Shop;
     private GameObject ShopMenu;
     private GameObject Clock;
+    private GameObject HelpMenu;
+    private GameObject PauseMenu;
     private Database DB;
     private GroundGenerator GG;
-
 
     // Start is called before the first frame update
     void Start()
     {
         //return;
-        DB = gameObject.GetComponent<DatabaseController>().db;
+        DB = gameObject.GetComponent<DatabaseController>().LoadDB();
         CanvasObj = GameObject.Find("Canvas");
 
-        NearInteractablePrompt = GameObject.Find("Canvas/PROMPT");
-        NearInteractablePrompt.SetActive(false);
+        NearInteractablePrompt = GameObject.Find("Canvas/PROMPT");      
         
         ShopMenu = GameObject.Find("Canvas/SHOPMENU");
         ShopMenu.SetActive(false);
@@ -36,18 +36,65 @@ public class GameController : MonoBehaviour
 
         Player = GameObject.Find("Player");
         Shop = GameObject.FindObjectOfType<ShopBehaviour>().gameObject;
+        Shop.GetComponent<ShopBehaviour>().ShuffleStock();
 
         Clock = GameObject.Find("Canvas/CLOCK");
+        
+        HelpMenu= GameObject.Find("Canvas/HELPMENU");
+        HelpMenu.SetActive(false);
 
-    }    
+        PauseMenu = GameObject.Find("Canvas/PAUSEMENU");
+        PauseMenu.SetActive(false);
+
+    }
 
     /// <summary>
-    /// show/hide NearInteractable prompt when triggers are in range of player
+    /// Non-player related inputs (ie. ui input)
     /// </summary>
-    /// <param name="colliders"></param>
-    public void CollisionListChangeListener(GameObject nearplr)
+    public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H)) 
+        {
+            ToggleHelp();
+        }
 
+        if (Input.GetKeyDown(KeyCode.Escape))         
+        {                        
+            TogglePause();
+        }
+    }
+
+    /// <summary>
+    /// Kill the app
+    /// </summary>
+    public void QuitGame() 
+    {
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Returns to main menu
+    /// </summary>
+    public void MainMenu() 
+    {
+        // todo -- load menu menu
+    }
+
+    /// <summary>
+    /// toggles the pause menu for the player
+    /// </summary>
+    public void TogglePause() 
+    {
+        Time.timeScale = Time.timeScale == 1f ? 0f : 1f;
+        PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+    }
+
+    /// <summary>
+    /// Toggles the help menu for the player
+    /// </summary>
+    private void ToggleHelp() 
+    {
+        HelpMenu.SetActive(!HelpMenu.activeInHierarchy);
     }
 
     /// <summary>
@@ -90,6 +137,9 @@ public class GameController : MonoBehaviour
         SetMoveablesActive(false);
     }
 
+    /// <summary>
+    /// close the dialog and get mobiles moving again!
+    /// </summary>
     private void ShopClosedDialog() 
     {
         DialogBox = Instantiate(Resources.Load("Prefabs/UI/NPCDialog", typeof(GameObject)) as GameObject);
@@ -123,7 +173,16 @@ public class GameController : MonoBehaviour
         {
             slots[c].GetComponentInChildren<TextMeshProUGUI>().text = "";
         }
+    }
 
+    /// <summary>
+    /// set the text for the nearby prompt
+    /// </summary>
+    /// <param name="t">text representing the nearby object</param>
+    public void SetPromptText(Interactable i) 
+    {
+        var t = i != null ? i.GetTranslation() : "Nothing...";        
+        NearInteractablePrompt.GetComponent<TextMeshProUGUI>().text = $"<b>Nearby:</b>\n{t}";
     }
 
     /// <summary>

@@ -1,0 +1,67 @@
+﻿Name,EN,CY
+GREETING_NICE_1_MORNING,"""Good Morning! Have a great day!""","""Bore da! Cewch dydd wych!"""
+GREETING_NICE_2_MORNING,"""Hey! Nice morning isnt it?""","""S'mae! Bore neis dydy fe?"""
+GREETING_NICE_3_MORNING,"""I love the smell of flowers in the morning!""","""Dwi'n caru'r arogl y blodau yn y fore!"""
+GREETING_NEUTRAL_1_MORNING,"""Good morning.""","""Bore da."""
+GREETING_NEUTRAL_2_MORNING,"""Hey. Morning.""","""S'mae. Bore."""
+GREETING_NEUTRAL_3_MORNING,"""It's good to get out in the mornings, right?""","""Mae'n iawn I fod tu mas yn y fore, reit?"""
+GREETING_MEAN_1_MORNING,"""Ugh it's too early for this.""","""Ych, mae'n rhy gynnar i hon."""
+GREETING_MEAN_2_MORNING,"""Let me wake up in peace!""","""Gadewch imi ddeffro mewn heddwch"""
+GREETING_MEAN_3_MORNING,"""If you don’t have coffee I'm not interested""","""Os does dim coffi gyda ti, sai'n diddoreb.."""
+GREETING_NICE_1_AFTERNOON,"""I hope you've brought suncreen!""","""Gobeithio eich bod wedi dod ag eli haul!"""
+GREETING_NICE_2_AFTERNOON,"""I love the sun at this time of day!""","""Dwi'n caru'r haul yr adeg hon o'r dydd!"""
+GREETING_NICE_3_AFTERNOON,"""Enjoy your afternoon""","""Mwynhewch eich prynhawn"""
+GREETING_NEUTRAL_1_AFTERNOON,"""Good afternoon""","""Prynhawn da"""
+GREETING_NEUTRAL_2_AFTERNOON,"""Hey""","""S'mae"""
+GREETING_NEUTRAL_3_AFTERNOON,"""Alright?""","""Awreit?"""
+GREETING_MEAN_1_AFTERNOON,GREETING_MEAN_1_AFTERNOON,GREETING_MEAN_1_AFTERNOON
+GREETING_MEAN_2_AFTERNOON,GREETING_MEAN_2_AFTERNOON,GREETING_MEAN_2_AFTERNOON
+GREETING_MEAN_3_AFTERNOON,GREETING_MEAN_3_AFTERNOON,GREETING_MEAN_3_AFTERNOON
+GREETING_NICE_1_NIGHT,GREETING_NICE_1_NIGHT,GREETING_NICE_1_NIGHT
+GREETING_NICE_2_NIGHT,GREETING_NICE_2_NIGHT,GREETING_NICE_2_NIGHT
+GREETING_NICE_3_NIGHT,GREETING_NICE_3_NIGHT,GREETING_NICE_3_NIGHT
+GREETING_NEUTRAL_1_NIGHT,GREETING_NEUTRAL_1_NIGHT,GREETING_NEUTRAL_1_NIGHT
+GREETING_NEUTRAL_2_NIGHT,GREETING_NEUTRAL_2_NIGHT,GREETING_NEUTRAL_2_NIGHT
+GREETING_NEUTRAL_3_NIGHT,GREETING_NEUTRAL_3_NIGHT,GREETING_NEUTRAL_3_NIGHT
+GREETING_MEAN_1_NIGHT,GREETING_MEAN_1_NIGHT,GREETING_MEAN_1_NIGHT
+GREETING_MEAN_2_NIGHT,GREETING_MEAN_2_NIGHT,GREETING_MEAN_2_NIGHT
+GREETING_MEAN_3_NIGHT,GREETING_MEAN_3_NIGHT,GREETING_MEAN_3_NIGHT
+END_NICE_1,END_NICE_1,END_NICE_1
+END_NICE_2,END_NICE_2,END_NICE_2
+END_NICE_3,END_NICE_3,END_NICE_3
+END_NEUTRAL_1,END_NEUTRAL_1,END_NEUTRAL_1
+END_NEUTRAL_2,END_NEUTRAL_2,END_NEUTRAL_2
+END_NEUTRAL_3,END_NEUTRAL_3,END_NEUTRAL_3
+END_MEAN_1,END_MEAN_1,END_MEAN_1
+END_MEAN_2,END_MEAN_2,END_MEAN_2
+END_MEAN_3,END_MEAN_3,END_MEAN_3
+RESPONSE_NICE_1_MORNING,"""Good morning!""","""Bore da!"""
+RESPONSE_NEUTRAL_1_MORNING,"""Hey""","""S'mae."""
+RESPONSE_MEAN_1_MORNING,"""Thanks...""","""Diolch.."""
+RESPONSE_NICE_1_AFTERNOON,"""Good Afternoon to you, too!""","""P'nawn da I chi 'fyd!"""
+RESPONSE_NEUTRAL_1_AFTERNOON,"""Hey Again..""","""S'mae eto.."""
+RESPONSE_MEAN_1_AFTERNOON,"""…Okay""","""…Ocê"""
+RESPONSE_NICE_1_NIGHT,"""Enjoy your evening""","""Mwynhewch eich nos"""
+RESPONSE_NEUTRAL_1_NIGHT,"""Gnight""","""Nos da"""
+RESPONSE_MEAN_1_NIGHT,"""Wake up in a better mood yeah?""","""Cysgwch mewn hwyl well, iawn?"""
+INTRO_SHOPKEEP,"""Welcome to the island shop! What can I get you?""","""Croeso i siop yr ynys! Beth allai fi cael i chi?"""
+END_SHOPKEEP,"""Thanks for shopping with us!""","""Diolch am siopa gyda ni!"""
+START,"""Start""","""Dechrau"""
+LOAD,"""Load""","""Llwytho"""
+CREDITS,"""Credits""","""Credydau"""
+SETTINGS,"""Settings""","""Gosodiadau"""
+CREDITS_CONTENT,CREDITS_CONTENT,CREDITS_CONTENT
+FLOWERPURPLE,Purple Flower,Blod Porffor
+FLOWERRED,Red Flower,Blod Coch
+FLOWERYELLOW,Yellow Flower,Blod Melyn
+CHAIRDESK,Desk Chair,Cadair desg
+CHAIRROUND,Round Chair,Cadair rownd
+LOUNGESOFA,Sofa,Sofa
+SMALLTREE,Small Tree,Coedwig fach
+SMALLCACTUS,Small Cactus,Cactus fach
+TABLECROSS,Cross Table,Bwrdd croesu
+TOILET,Toilet,Toiled
+SHOP_CLOSED,"Sorry, the shop is not open at night","Sori, Dyw'r siop ddim yn agor trwy'r nos"
+TREE,Tree,Coedwig
+TENT,Tent,Tent
+SHOP,Shop,Siop

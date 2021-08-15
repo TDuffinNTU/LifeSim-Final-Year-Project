@@ -40,10 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f0234b03a8de934cae9222ce10fc23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
-  Name: Tree
-  isFlower: 0
-  Value: 0
+  Name: TREE
 --- !u!1001 &3559323570966494935
 PrefabInstance:
   m_ObjectHideFlags: 0

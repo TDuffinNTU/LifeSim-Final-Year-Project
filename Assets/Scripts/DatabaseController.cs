@@ -5,5 +5,10 @@ using UnityEngine;
 public class DatabaseController : MonoBehaviour
 {
     [SerializeField]
-    public readonly Database db = new Database();
+    public Database db;
+
+    public Database LoadDB() 
+    {        
+        return db = new Database();
+    }
 }

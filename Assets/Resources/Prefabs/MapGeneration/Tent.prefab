@@ -72,10 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de725c3008702d468e2770224a077f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
-  Name: Tent
-  isFlower: 0
-  Value: 0
+  Name: TENT
 --- !u!1001 &353974358097394823
 PrefabInstance:
   m_ObjectHideFlags: 0

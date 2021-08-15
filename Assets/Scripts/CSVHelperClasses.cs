@@ -4,7 +4,7 @@ using System.IO;
 using System.Globalization;
 using CsvHelper;
 using System;
-//using Unity;
+using UnityEngine;
 //using UnityEngine;
 
 /// <summary>
@@ -19,35 +19,42 @@ public class Database
     private readonly IEnumerable<NPC_DATA_MAP> NPCData;
     private readonly IEnumerable<ITEMS_MAP> Items;
 
-    
+
 
     //private IEnumerable<FRIENDSHIP_MAP> Friendships;   
 
     // paths to CSVs
     // TODO: move root inside unity
-    private const string rootpath = "C:\\Users\\thoma\\OneDrive - Nottingham Trent University\\YEAR FOUR\\FYP\\Databases\\";
+    private readonly string rootpath = Application.streamingAssetsPath + "/Databases/";
 
-    private Random rng = new Random();
+    private System.Random rng = new System.Random();
 
-    private const string TranslationsPath = rootpath + "TRANSLATIONS.CSV";
-    private const string NPCDialogPath = rootpath + "NPCDIALOG.CSV";
-    private const string ResponsesPath = rootpath + "RESPONSES.CSV";
-    private const string NPCDataPath = rootpath + "NPCDATA.CSV";
-    private const string ItemPath = rootpath + "ITEMS.CSV";
-    //private const string FriendshipsPath = rootpath + "SAVEDATA\\FRIENDSHIPS.CSV";
-    private const string SettingsPath = rootpath + "SAVEDATA\\SETTINGS.CSV";
-    private const string SaveDataPath = rootpath + "SAVEDATA\\SAVEDATA.CSV";
+    private readonly string TranslationsPath;
+    private readonly string NPCDialogPath;
+    private readonly string ResponsesPath;
+    private readonly string NPCDataPath;
+    private readonly string ItemPath;    
+    //private readonly string SettingsPath;
+    //private readonly string SaveDataPath;
 
     
 
     public Database()
     {
+        TranslationsPath = rootpath + "TRANSLATIONS.CSV";
+        NPCDialogPath = rootpath + "NPCDIALOG.CSV";
+        ResponsesPath = rootpath + "RESPONSES.CSV";
+        NPCDataPath = rootpath + "NPCDATA.CSV";
+        ItemPath = rootpath + "ITEMS.CSV";
+        //SettingsPath = rootpath + "SAVEDATA\\SETTINGS.CSV";
+        //SaveDataPath = rootpath + "SAVEDATA\\SAVEDATA.CSV";
+
         Translations =  LoadData<TRANSLATION_MAP>(TranslationsPath);
         NPCDialog = LoadData<NPC_DIALOG_MAP>(NPCDialogPath);
         Responses = LoadData<RESPONSE_MAP>(ResponsesPath);
         NPCData = LoadData<NPC_DATA_MAP>(NPCDataPath);
         Items = LoadData<ITEMS_MAP>(ItemPath);
-        //Friendships = LoadData<FRIENDSHIP_MAP>(PATHS[3]);
+       
     }
 
 
@@ -109,7 +116,7 @@ public class Database
 
         return (query != null && query.Any()) ?
             (query.First().translation == "\"\"" ? $"NO TRANSLATION FOR: {name}\tCODE: {code}" : query.First().translation) :
-            $"couldnt find";
+            name;
 
     }
 
@@ -270,6 +277,9 @@ public class SAVE_DATA_MAP
     public string Friendships { get; set; }
 }
 
+/// <summary>
+/// Items that can be bought or sold in the shop
+/// </summary>
 public class ITEMS_MAP 
 {
     public string Name { get; set; }
