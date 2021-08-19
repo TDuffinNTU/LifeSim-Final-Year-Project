@@ -73,6 +73,9 @@ public class GroundGenerator : MonoBehaviour
         FLOWER_YELLOW
     }      
 
+    /// <summary>
+    /// generates a new map
+    /// </summary>
     public void NewMap() 
     {
         gMesh = GetComponent<MeshFilter>().mesh;
@@ -86,16 +89,26 @@ public class GroundGenerator : MonoBehaviour
         UpdateMesh();
     }
 
+    /// <summary>
+    /// unused
+    /// </summary>
     public void SaveData() 
     {
         
     }
 
+    /// <summary>
+    /// unused
+    /// </summary>
+    /// <param name="db"></param>
     public void LoadData(Database db)
     { 
         
     }
 
+    /// <summary>
+    /// reset the map and rebuild it.
+    /// </summary>
     public void Reset()
     {      
         RandomSeed = Random.Range(1, LARGEINT);       
@@ -106,9 +119,14 @@ public class GroundGenerator : MonoBehaviour
         GenerateGround();
         BuildMesh();
         UpdateMesh();
-    }    
+    }
 
-    // Places objects on map
+    /// <summary>
+    /// Places objects on map randomly
+    /// </summary>
+    /// <param name="item">game object to place</param>
+    /// <param name="max">maximum number of objects to place</param>
+    /// <param name="allowedTile">tile that the object can be placed on</param>
     void PlaceMapItemRandomly(GameObject item, int max, GroundTextures allowedTile)
     {        
         int itemCount = 0;

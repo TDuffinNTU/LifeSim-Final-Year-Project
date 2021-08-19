@@ -23,6 +23,9 @@ public class DialogBoxController : MonoBehaviour
     public float TimeBetweenLetters;
     private float UntilNextLetter;
 
+    /// <summary>
+    /// prepare the dialogbox for initialisation
+    /// </summary>
     public void PreInit() 
     {
         Name = gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0];

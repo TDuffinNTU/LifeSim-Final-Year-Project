@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -23,6 +24,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         //return;
+        Time.timeScale = 1f;
         DB = gameObject.GetComponent<DatabaseController>().LoadDB();
         CanvasObj = GameObject.Find("Canvas");
 
@@ -77,7 +79,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void MainMenu() 
     {
-        // todo -- load menu menu
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -86,6 +88,7 @@ public class GameController : MonoBehaviour
     public void TogglePause() 
     {
         Time.timeScale = Time.timeScale == 1f ? 0f : 1f;
+        Debug.Log(Time.timeScale);
         PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
     }
 
@@ -227,11 +230,18 @@ public class GameController : MonoBehaviour
         Player.GetComponent<PlayerController>().enabled = active;
     }
 
+    /// <summary>
+    /// Shuffles the shop's stock
+    /// </summary>
     public void RefreshStock() 
     {
         Shop.GetComponent<ShopBehaviour>().ShuffleStock();
     }
 
+    /// <summary>
+    /// opens shop menu
+    /// </summary>
+    /// <param name="stock"></param>
     public void OpenShopMenu(List<ITEMS_MAP> stock) 
     {
         if (Clock.GetComponent<ClockController>().GetTimeOfDay() == "NIGHT") 
@@ -260,13 +270,19 @@ public class GameController : MonoBehaviour
         GameObject.FindGameObjectWithTag("Wallet").GetComponent<TextMeshProUGUI>().text = "$" + Player.GetComponent<PlayerController>().Cash.ToString();
     }
     
-    
+    /// <summary>
+    /// closes shop menu
+    /// </summary>
     public void CloseShopMenu() 
     {
         ShopMenu.SetActive(false);
         SetMoveablesActive(true);
     }
 
+    /// <summary>
+    /// buy item from shop
+    /// </summary>
+    /// <param name="index"> index of shop stock selected</param>
     public void BuyItem(int index) 
     {
         var item = Shop.GetComponent<ShopBehaviour>().Stock[index];
@@ -275,6 +291,10 @@ public class GameController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// sell item from player inventory
+    /// </summary>
+    /// <param name="index">index of player item to sell</param>
     public void SellItem(int index) 
     {
         try
