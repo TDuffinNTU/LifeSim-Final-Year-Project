@@ -14,18 +14,18 @@ GREETING_NICE_3_AFTERNOON,"""Enjoy your afternoon""","""Mwynhewch eich prynhawn"
 GREETING_NEUTRAL_1_AFTERNOON,"""Good afternoon""","""Prynhawn da"""
 GREETING_NEUTRAL_2_AFTERNOON,"""Hey""","""S'mae"""
 GREETING_NEUTRAL_3_AFTERNOON,"""Alright?""","""Awreit?"""
-GREETING_MEAN_1_AFTERNOON,GREETING_MEAN_1_AFTERNOON,GREETING_MEAN_1_AFTERNOON
-GREETING_MEAN_2_AFTERNOON,GREETING_MEAN_2_AFTERNOON,GREETING_MEAN_2_AFTERNOON
-GREETING_MEAN_3_AFTERNOON,GREETING_MEAN_3_AFTERNOON,GREETING_MEAN_3_AFTERNOON
-GREETING_NICE_1_NIGHT,GREETING_NICE_1_NIGHT,GREETING_NICE_1_NIGHT
-GREETING_NICE_2_NIGHT,GREETING_NICE_2_NIGHT,GREETING_NICE_2_NIGHT
-GREETING_NICE_3_NIGHT,GREETING_NICE_3_NIGHT,GREETING_NICE_3_NIGHT
-GREETING_NEUTRAL_1_NIGHT,GREETING_NEUTRAL_1_NIGHT,GREETING_NEUTRAL_1_NIGHT
-GREETING_NEUTRAL_2_NIGHT,GREETING_NEUTRAL_2_NIGHT,GREETING_NEUTRAL_2_NIGHT
-GREETING_NEUTRAL_3_NIGHT,GREETING_NEUTRAL_3_NIGHT,GREETING_NEUTRAL_3_NIGHT
-GREETING_MEAN_1_NIGHT,GREETING_MEAN_1_NIGHT,GREETING_MEAN_1_NIGHT
-GREETING_MEAN_2_NIGHT,GREETING_MEAN_2_NIGHT,GREETING_MEAN_2_NIGHT
-GREETING_MEAN_3_NIGHT,GREETING_MEAN_3_NIGHT,GREETING_MEAN_3_NIGHT
+GREETING_MEAN_1_AFTERNOON,"""Yeah whatever. Afternoon.""","""Ie beth bynnag. Prynhawn."""
+GREETING_MEAN_2_AFTERNOON,"""I hate the sun today""","""Rwy'n casáu'r haul heddiw"""
+GREETING_MEAN_3_AFTERNOON,"""Go away!""","""Ewch i ffwrdd!"""
+GREETING_NICE_1_NIGHT,"""It's nice to see you this evening!""","""Mae'n braf eich gweld chi heno!"""
+GREETING_NICE_2_NIGHT,"""I love how the moon looks tonight!""","""Dwi wrth fy modd gyda sut mae'r lleuad yn edrych heno!"""
+GREETING_NICE_3_NIGHT,"""Enjoy your evening!""","""Mwynhewch eich noson!"""
+GREETING_NEUTRAL_1_NIGHT,"""Good Evening.""","""Noson Dda."""
+GREETING_NEUTRAL_2_NIGHT,"""I'm getting tired…""","""Rwy'n blino..."""
+GREETING_NEUTRAL_3_NIGHT,"""See you tomorrow""","""Welwn ni chi yfory"""
+GREETING_MEAN_1_NIGHT,"""I'm too tired for this""","""Rwy'n rhy flinedig am hyn"""
+GREETING_MEAN_2_NIGHT,"""Night.""","""Nos."""
+GREETING_MEAN_3_NIGHT,"""Had enough of you for one day""","""Wedi cael digon ohonoch chi am un diwrnod"""
 END_NICE_1,END_NICE_1,END_NICE_1
 END_NICE_2,END_NICE_2,END_NICE_2
 END_NICE_3,END_NICE_3,END_NICE_3
@@ -51,17 +51,17 @@ LOAD,"""Load""","""Llwytho"""
 CREDITS,"""Credits""","""Credydau"""
 SETTINGS,"""Settings""","""Gosodiadau"""
 CREDITS_CONTENT,CREDITS_CONTENT,CREDITS_CONTENT
-FLOWERPURPLE,Purple Flower,Blod Porffor
-FLOWERRED,Red Flower,Blod Coch
-FLOWERYELLOW,Yellow Flower,Blod Melyn
+FLOWERPURPLE,Purple Flower,Blodau Porffor
+FLOWERRED,Red Flower,Blodau Coch
+FLOWERYELLOW,Yellow Flower,Blodau Melyn
 CHAIRDESK,Desk Chair,Cadair desg
 CHAIRROUND,Round Chair,Cadair rownd
-LOUNGESOFA,Sofa,Sofa
-SMALLTREE,Small Tree,Coedwig fach
+LOUNGESOFA,Sofa,Soffa
+SMALLTREE,Small Tree,Coeden Fach
 SMALLCACTUS,Small Cactus,Cactus fach
 TABLECROSS,Cross Table,Bwrdd croesu
 TOILET,Toilet,Toiled
 SHOP_CLOSED,"Sorry, the shop is not open at night","Sori, Dyw'r siop ddim yn agor trwy'r nos"
-TREE,Tree,Coedwig
-TENT,Tent,Tent
+TREE,Tree,Coeden
+TENT,Tent,Pabell
 SHOP,Shop,Siop

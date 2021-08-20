@@ -9,7 +9,7 @@ public class ClockController : MonoBehaviour
     private GameObject ClockHand;
     private GameObject Light;
 
-    private const float TIME_PER_DAY = 30f;
+    private const float TIME_PER_DAY = 150f;
 
     private const float ROTATE_OFFSET_CLOCK = -90f;
     private const float ROTATE_OFFSET_LIGHT = 35f; 

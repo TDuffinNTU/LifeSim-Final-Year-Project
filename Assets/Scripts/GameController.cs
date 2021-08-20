@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class GameController : MonoBehaviour
 {
@@ -194,7 +195,7 @@ public class GameController : MonoBehaviour
     /// <param name="index"></param>
     public void HighlightInventorySlot(int index)
     {
-        GameObject[] slots = GameObject.FindGameObjectsWithTag("InventorySlot");
+        GameObject[] slots = GameObject.FindGameObjectsWithTag("InventorySlot").OrderByDescending(go => go.transform.position.y).ToArray();
         int count = 0;
         foreach (var s in slots)
         {
@@ -253,7 +254,7 @@ public class GameController : MonoBehaviour
         ShopMenu.SetActive(true);
         SetMoveablesActive(false);
 
-        GameObject[] slots = GameObject.FindGameObjectsWithTag("ShopInventorySlot");
+        GameObject[] slots = GameObject.FindGameObjectsWithTag("ShopInventorySlot").OrderByDescending(go => go.transform.position.y).ToArray();
         int count = 0;
         foreach (var i in stock)
         {
